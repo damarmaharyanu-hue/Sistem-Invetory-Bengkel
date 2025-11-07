@@ -100,7 +100,7 @@ int stricmp_custom(const char *a, const char *b) {
 }
 
 void tampilkanBarang(struct Barang data[], int n) {
-    printf("=== DAFTAR BARANG ===\n");
+    printf("================= DAFTAR BARANG =================\n");
     if (n == 0) {
         printf("Belum ada data barang.\n");
     } else {
@@ -109,11 +109,11 @@ void tampilkanBarang(struct Barang data[], int n) {
             printf("%-3d %-20s %-10d Rp.%-10.2f\n", i + 1, data[i].nama, data[i].jumlah, data[i].harga);
         }
     }
-    printf("--------------------------------------------\n");
+    printf("--------------------------------------------------\n");
 }
 
 void tampilkanRiwayat(struct Riwayat r[], int count) {
-    printf("=== RIWAYAT TRANSAKSI ===\n");
+    printf("=============== RIWAYAT TRANSAKSI ===============\n");
     if (count == 0) {
         printf("Belum ada transaksi.\n");
     } else {
@@ -121,8 +121,7 @@ void tampilkanRiwayat(struct Riwayat r[], int count) {
             printf("[%s] %s\n", r[i].waktu, r[i].keterangan);
         }
     }
-    printf("--------------------------------------------\n");
-}
+}    
 
 // Inisialisasi data awal (jika file belum ada)
 void inisialisasiData(struct Barang data[], int *n) {
@@ -168,12 +167,13 @@ int main() {
         tampilkanBarang(data, n);
 
         printf("\n===== MENU PENYIMPANAN BARANG =====\n");
-        printf("1. Tambah Barang Baru\n");
-        printf("2. Tambah Stok Barang\n");
-        printf("3. Kurangi Barang\n");
-        printf("4. Hapus Barang\n");
-        printf("5. Lihat Riwayat Transaksi\n");
-        printf("6. Keluar\n");
+        printf("|1.             Tambah Barang Baru|\n");
+        printf("|2.             Tambah Stok Barang|\n");
+        printf("|3.                 Kurangi Barang|\n");
+        printf("|4.                   Hapus Barang|\n");
+        printf("|5.        Lihat Riwayat Transaksi|\n");
+        printf("|6.                         Keluar|\n");
+        printf("===================================\n");
         printf("Pilih menu (1-6): ");
         scanf("%d", &pilihan);
         getchar();
@@ -276,7 +276,7 @@ int main() {
                     }
                 }
                 if (!found)
-                    printf("BARANG TIDAK DITEMUKAN!\n");
+                    printf("BARANG TIDAK DITEMUKAN!!!\n");
                 break;
             }
 
@@ -306,13 +306,13 @@ int main() {
                     }
                 }
                 if (!found)
-                    printf("BARANG TIDAK DITEMUKAN\n");
+                    printf("BARANG TIDAK DITEMUKAN!!!\n");
                 break;
             }
 
             case 5:
                 tampilkanRiwayat(riwayat, jumlahRiwayat);
-                printf("\nTekan Enter untuk Kembali...");
+                printf("\nTekan Enter untuk Kembali !!!");
                 getchar();
                 break;
 
@@ -321,7 +321,7 @@ int main() {
                 simpanRiwayat(riwayat, jumlahRiwayat);
                 clearScreen();
                 printf("Data dan riwayat telah disimpan ke file.\n");
-                printf("Terima kasih! Program selesai.\n");
+                printf("TERIMA KASIH !!!! Program Selesai.\n");
                 return 0;
 
             default:
