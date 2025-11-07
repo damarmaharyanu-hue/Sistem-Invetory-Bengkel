@@ -17,9 +17,7 @@ struct Riwayat {
     char waktu[30];
 };
 
-// ====== FUNGSI TAMBAHAN UNTUK FILE ======
 
-// Simpan data barang ke file
 void simpanData(struct Barang data[], int n) {
     FILE *f = fopen("data.txt", "w");
     if (f == NULL) {
@@ -32,11 +30,10 @@ void simpanData(struct Barang data[], int n) {
     fclose(f);
 }
 
-// Muat data barang dari file
 int muatData(struct Barang data[]) {
     FILE *f = fopen("data.txt", "r");
     if (f == NULL) {
-        return 0; // jika belum ada file
+        return 0; 
     }
     int n = 0;
     while (fscanf(f, "%49[^|]|%d|%f\n", data[n].nama, &data[n].jumlah, &data[n].harga) == 3) {
@@ -46,7 +43,6 @@ int muatData(struct Barang data[]) {
     return n;
 }
 
-// Simpan riwayat ke file
 void simpanRiwayat(struct Riwayat r[], int count) {
     FILE *f = fopen("riwayat.txt", "w");
     if (f == NULL) {
@@ -59,7 +55,6 @@ void simpanRiwayat(struct Riwayat r[], int count) {
     fclose(f);
 }
 
-// Muat riwayat dari file
 int muatRiwayat(struct Riwayat r[]) {
     FILE *f = fopen("riwayat.txt", "r");
     if (f == NULL) return 0;
@@ -71,7 +66,6 @@ int muatRiwayat(struct Riwayat r[]) {
     return count;
 }
 
-// ====== FUNGSI UTAMA PROGRAM ======
 
 void clearScreen() {
 #ifdef _WIN32
@@ -123,7 +117,6 @@ void tampilkanRiwayat(struct Riwayat r[], int count) {
     }
 }    
 
-// Inisialisasi data awal (jika file belum ada)
 void inisialisasiData(struct Barang data[], int *n) {
     struct Barang awal[10] = {
         {"Oli Mesin", 25, 75000},
@@ -152,11 +145,9 @@ int main() {
     char namaCari[50];
     int i, found;
 
-    // === Muat data dari file jika ada ===
     n = muatData(data);
     jumlahRiwayat = muatRiwayat(riwayat);
 
-    // Jika file kosong, isi dengan data awal
     if (n == 0) {
         inisialisasiData(data, &n);
         simpanData(data, n);
@@ -328,7 +319,6 @@ int main() {
                 printf("Pilihan tidak valid!\n");
         }
 
-        // Simpan setiap perubahan otomatis
         simpanData(data, n);
         simpanRiwayat(riwayat, jumlahRiwayat);
     }
