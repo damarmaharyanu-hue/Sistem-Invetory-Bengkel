@@ -17,6 +17,26 @@ struct Riwayat {
     char waktu[30];
 };
 
+int typo(const char *a, const char *b) {
+    int la = strlen(a), lb = strlen(b);
+    if (abs(la - lb) > 1) return 0;
+
+    int i = 0, j = 0, beda = 0;
+    while (a[i] && b[j]) {
+        if (tolower(a[i]) != tolower(b[j])) {
+            beda++;
+            if (beda > 1) return 0;
+
+            if (la > lb) i++;
+            else if (lb > la) j++;
+            else { i++; j++; }
+        } else {
+            i++; j++;
+        }
+    }
+    return 1;
+}
+
 
 void simpanData(struct Barang data[], int n) {
     FILE *f = fopen("data.txt", "w");
@@ -212,26 +232,45 @@ int main() {
                 found = 0;
                 for (i = 0; i < n; i++) {
                     if (stricmp_custom(data[i].nama, namaCari) == 0) {
-                        int tambah;
-                        printf("Masukkan jumlah tambahan: ");
-                        scanf("%d", &tambah);
-                        getchar();
-                        data[i].jumlah += tambah;
-
-                        char waktu[30];
-                        waktuSekarang(waktu);
-                        sprintf(riwayat[jumlahRiwayat].keterangan,
-                                "Menambah stok barang '%s' sebanyak %d",
-                                data[i].nama, tambah);
-                        strcpy(riwayat[jumlahRiwayat].waktu, waktu);
-                        jumlahRiwayat++;
-
                         found = 1;
                         break;
                     }
                 }
-                if (!found)
+
+                if (!found) {
+                    for (int k = 0; k < n; k++) {
+                        if (typo(data[k].nama, namaCari)) {
+                            printf("Barang '%s' tidak ditemukan.\n", namaCari);
+                            printf("Mungkin maksud Anda: '%s'? (y/n): ", data[k].nama);
+                            char c = getchar(); getchar();
+                            if (c == 'y' || c == 'Y') {
+                                i = k;
+                                found = 1;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
                     printf("Barang tidak ditemukan.\n");
+                    break;
+                }
+
+                int tambah;
+                printf("Masukkan jumlah tambahan: ");
+                scanf("%d", &tambah);
+                getchar();
+                data[i].jumlah += tambah;
+
+                char waktu[30];
+                waktuSekarang(waktu);
+                sprintf(riwayat[jumlahRiwayat].keterangan,
+                        "Menambah stok barang '%s' sebanyak %d",
+                        data[i].nama, tambah);
+                strcpy(riwayat[jumlahRiwayat].waktu, waktu);
+                jumlahRiwayat++;
+
                 break;
             }
 
@@ -245,29 +284,48 @@ int main() {
                 found = 0;
                 for (i = 0; i < n; i++) {
                     if (stricmp_custom(data[i].nama, namaCari) == 0) {
-                        int kurang;
-                        printf("Masukkan Jumlah yang Dikurangi: ");
-                        scanf("%d", &kurang);
-                        getchar();
-                        if (kurang <= data[i].jumlah) {
-                            data[i].jumlah -= kurang;
-
-                            char waktu[30];
-                            waktuSekarang(waktu);
-                            sprintf(riwayat[jumlahRiwayat].keterangan,
-                                    "Mengurangi barang '%s' sebanyak %d",
-                                    data[i].nama, kurang);
-                            strcpy(riwayat[jumlahRiwayat].waktu, waktu);
-                            jumlahRiwayat++;
-                        } else {
-                            printf("Jumlah Pengurangan Melebihi Stok!\n");
-                        }
                         found = 1;
                         break;
                     }
                 }
-                if (!found)
+
+                if (!found) {
+                    for (int k = 0; k < n; k++) {
+                        if (typo(data[k].nama, namaCari)) {
+                            printf("Mungkin maksud Anda: '%s'? (y/n): ", data[k].nama);
+                            char c = getchar(); getchar();
+                            if (c == 'y' || c == 'Y') {
+                                i = k;
+                                found = 1;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
                     printf("BARANG TIDAK DITEMUKAN!!!\n");
+                    break;
+                }
+
+                int kurang;
+                printf("Masukkan Jumlah yang Dikurangi: ");
+                scanf("%d", &kurang);
+                getchar();
+
+                if (kurang <= data[i].jumlah) {
+                    data[i].jumlah -= kurang;
+
+                    char waktu[30];
+                    waktuSekarang(waktu);
+                    sprintf(riwayat[jumlahRiwayat].keterangan,
+                            "Mengurangi barang '%s' sebanyak %d",
+                            data[i].nama, kurang);
+                    strcpy(riwayat[jumlahRiwayat].waktu, waktu);
+                    jumlahRiwayat++;
+                } else {
+                    printf("Jumlah Pengurangan Melebihi Stok!\n");
+                }
                 break;
             }
 
@@ -281,23 +339,42 @@ int main() {
                 found = 0;
                 for (i = 0; i < n; i++) {
                     if (stricmp_custom(data[i].nama, namaCari) == 0) {
-                        char waktu[30];
-                        waktuSekarang(waktu);
-                        sprintf(riwayat[jumlahRiwayat].keterangan,
-                                "Menghapus Barang '%s'", data[i].nama);
-                        strcpy(riwayat[jumlahRiwayat].waktu, waktu);
-                        jumlahRiwayat++;
-
-                        for (int j = i; j < n - 1; j++) {
-                            data[j] = data[j + 1];
-                        }
-                        n--;
                         found = 1;
                         break;
                     }
                 }
-                if (!found)
+
+                if (!found) {
+                    for (int k = 0; k < n; k++) {
+                        if (typo(data[k].nama, namaCari)) {
+                            printf("Mungkin maksud Anda: '%s'? (y/n): ", data[k].nama);
+                            char c = getchar(); getchar();
+                            if (c == 'y' || c == 'Y') {
+                                i = k;
+                                found = 1;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
                     printf("BARANG TIDAK DITEMUKAN!!!\n");
+                    break;
+                }
+
+                char waktu[30];
+                waktuSekarang(waktu);
+                sprintf(riwayat[jumlahRiwayat].keterangan,
+                        "Menghapus Barang '%s'", data[i].nama);
+                strcpy(riwayat[jumlahRiwayat].waktu, waktu);
+                jumlahRiwayat++;
+
+                for (int j = i; j < n - 1; j++) {
+                    data[j] = data[j + 1];
+                }
+                n--;
+
                 break;
             }
 
